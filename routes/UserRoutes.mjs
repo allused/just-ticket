@@ -1,6 +1,6 @@
 import express, { request, response } from 'express';
 import { responseMessages } from './HttpRespMsgs.mjs';
-import { loginUser, getAllUser, addNewUser } from '../controllers/UserController.mjs';
+import { loginUser, getAllUser, addNewUser, updateUser } from '../controllers/UserController.mjs';
 import {idSchema, teamSchemaGet, userSchemaGet, userSchemaPatch, userSchemaPost} from '../validators/ModelValidations.mjs';
 import Joi from 'joi';
 
@@ -42,6 +42,8 @@ userRouter.get('/teams/:teamId/users', getAllUser);
 
     //Add a new user to an existing team
 userRouter.post('/users/', addNewUser);
+
+userRouter.put('/users/:userId', updateUser);
 
 userRouter.patch('/api/users/:userId', (req, resp) => {
 

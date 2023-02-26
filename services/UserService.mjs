@@ -68,4 +68,17 @@ const AddUser = async (userValList) =>
     }
 }
 
-export {GetUserByTeamId, GetUserByUsername, GetUserByUserId, AddUser}
+const UpdateUser = async (userData) =>
+{
+    try 
+    {
+        return await pool.query(`UPDATE ticketuser SET teamid=$5,permissionid=$1,username=$2,password=$3,displayname=$4,modifiedat=$7 WHERE id=$6 `);
+    } 
+    catch (err) 
+    {
+        console.log(`The following error occured while updating a User: ${err}`);
+        return err;
+    }
+}
+
+export {GetUserByTeamId, GetUserByUsername, GetUserByUserId, AddUser, UpdateUser}
