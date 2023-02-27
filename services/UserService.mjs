@@ -93,7 +93,7 @@ const UpdateUser = async (userData) =>
     const client = await pool.connect();
     try 
     {
-        return await pool.query(`UPDATE ticketuser SET teamid=$5,permissionid=$1,username=$2,password=$3,displayname=$4,modifiedat=$7 WHERE id=$6 `);
+        return await pool.query(`UPDATE ticketuser SET teamid=$5,permissionid=$1,username=$2,password=$3,displayname=$4,modifiedat=$7 WHERE id=$6 RETURNING teamid,permissionid,username,password,displayname`,userData);
     } 
     catch (err) 
     {

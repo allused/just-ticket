@@ -1,4 +1,4 @@
-import { GetUserByTeamId, GetUserByUsername, GetUserByUserId, AddUser } from "../services/UserService.mjs";
+import { GetUserByTeamId, GetUserByUsername, GetUserByUserId, AddUser, UpdateUser } from "../services/UserService.mjs";
 import { responseMessages } from '../routes/HttpRespMsgs.mjs';
 import {idSchema, teamSchemaGet, userSchemaGet, userSchemaPatch, userSchemaPost} from '../validators/ModelValidations.mjs';
 
@@ -118,16 +118,19 @@ const updateUser = async (req, resp) =>
     if (userId != null && Joi.validate(req.body, userSchemaPatch))
     {
         //Try to find and update the requested user, if found and succesfully updated, its returned
-        const user = null;
+        const user = await GetUserByUserId(userId);
+        const userData = req.body;
         //Return the proper http response with the updated user if the update was succesful
-        if (user != null){
-            if (dontHavePermission)
+        if (user.length > 0){
+            if (req.body.permissionId == 3)
             {
                 resp.status(403).send(responseMessages.forbidden)
             }
             else
             {
-                resp.status(201).send(`The following user is succesfully updated: \n${user}`)
+
+                const updatedUser = await UpdateUser(userData);
+                resp.status(201).send(`The following user is succesfully updated: \n${updatedUser}`)
             }
             
         }else{
@@ -143,4 +146,4 @@ const updateUser = async (req, resp) =>
     
 
 
-export {loginUser, getAllUser, addNewUser}
+export {loginUser, getAllUser, addNewUser, updateUser}
