@@ -6,7 +6,7 @@ const AddTask = async (task) =>
 {
     try 
     {
-        return await pool.query(`INSERT INTO task(displayname, teamid, userid, description, createdate, tasktypeid,taskpriorityid) VALUES ($1,$2,$3,$4,$5,$6,$7)`)
+        return await pool.query(`INSERT INTO task(displayname, teamid, userid, description, createdate, tasktypeid,taskpriorityid) VALUES ($1,$2,$3,$4,$5,$6,$7)`, task)
     } 
     catch (error) 
     {
