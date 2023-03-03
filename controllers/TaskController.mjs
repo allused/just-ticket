@@ -33,5 +33,36 @@ const getTaskByTaskID = async (req, resp) =>
     }
 }
 
+const getTaskByUserID = async (req, resp) =>
+{
+    const {userId} = req.params;
+    if (userId != null && Joi.validate(taskSchemaGet, idSchema))
+    {
 
-export{getTaskByTaskID}
+        //Calling the task controller below, to get the requested task
+        const user = await GetUserByUserId(userId);    
+        //When the task is returned, we send it in a response, if not found, send the proper rest response that not found
+        if (user.length > 0){
+            const tasks = await GetTask({createuserid: taskId});
+            if (tasks.rows.length < 1)
+            {
+                resp.status(403).send(responseMessages.notFound)
+            }
+            else
+            {
+                resp.status(200).send(tasks.rows)
+            }
+        }else{
+            resp.status(404).send(responseMessages.forbidden)
+        }
+    } 
+    else
+    {
+        resp.status(400).send(responseMessages.badRequestId)
+    }
+}
+
+
+
+
+export{getTaskByTaskID, getTaskByUserID}
