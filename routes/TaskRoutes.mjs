@@ -1,13 +1,11 @@
 import express from 'express';
 import { responseMessages } from './HttpRespMsgs.mjs';
 import {idSchema, taskSchemaPost, taskSchemaPatch, taskSchemaGet, taskSchemaGetAll} from '../validators/ModelValidations.mjs';
+import { getTaskByTaskID } from '../controllers/TaskController.mjs';
 
 const taskRouter = express.Router();
 
-taskRouter.get('/tasks/:taskId', (req, resp) => {
-
-    
-     });
+taskRouter.get('/tasks/:taskId', getTaskByTaskID);
 
 taskRouter.get('users/:userId/tasks', (req, resp) => {
 
