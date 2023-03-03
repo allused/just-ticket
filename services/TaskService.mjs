@@ -16,10 +16,10 @@ const AddTask = async (task) =>
 
 const GetTask = async (getParam) =>
 {
-    const condition = "userId" in getParam ? "userid" : "teamid";
+    const condition = Object.keys(getParam)[0];
     try 
     {
-        return await pool.query(`SELECT * FROM task WHERE ${condition}= $1`,["userId" in getParam ? getParam["userId"] : getParam["teamId"]]);
+        return await pool.query(`SELECT * FROM task WHERE ${condition}= $1`,getParam[condition]);
     } 
     catch (error) 
     {
