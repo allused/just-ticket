@@ -1,39 +1,13 @@
 import express from 'express';
 import { responseMessages } from './HttpRespMsgs.mjs';
 import {idSchema, taskSchemaPost, taskSchemaPatch, taskSchemaGet, taskSchemaGetAll} from '../validators/ModelValidations.mjs';
-import { getTaskByTaskID } from '../controllers/TaskController.mjs';
+import { getTaskByTaskID, getTaskByUserID } from '../controllers/TaskController.mjs';
 
 const taskRouter = express.Router();
 
 taskRouter.get('/tasks/:taskId', getTaskByTaskID);
 
-taskRouter.get('users/:userId/tasks', (req, resp) => {
-
-    const {userId} = req.params;
-    if (userId != null && Joi.validate(req.body, taskSchemaGetAll))
-    {
-
-        //Calling the task controller below, to get the all the requested task for the given userID     
-        const tasks = [];
-        //When the task array is returned, we send it in a response, if if the userID is not found, send the proper rest response
-        if (tasks != null){
-            if (dontHavePermission)
-            {
-                resp.status(403).send(responseMessages.forbidden)
-            }
-            else
-            {
-                resp.status(200).send(tasks)
-            }
-        }else{
-            resp.status(404).send(responseMessages.notFound)
-        }
-    } 
-    else
-    {
-        resp.status(400).send(responseMessages.badRequestId)
-    }
-    });
+taskRouter.get('users/:userId/tasks', getTaskByUserID);
 
 taskRouter.get('/teams/:teamId/tasks', (req, resp) => {
 
