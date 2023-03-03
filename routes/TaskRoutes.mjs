@@ -1,36 +1,15 @@
-import {app} from '../index.js';
+import express from 'express';
 import { responseMessages } from './HttpRespMsgs.mjs';
 import {idSchema, taskSchemaPost, taskSchemaPatch, taskSchemaGet, taskSchemaGetAll} from '../validators/ModelValidations.mjs';
 
-app.get('/api/tasks/:taskId', (req, resp) => {
+const taskRouter = express.Router();
 
-    const {taskId} = req.params;
-    if (taskId != null && Joi.validate(taskSchemaGet, idSchema))
-    {
+taskRouter.get('/tasks/:taskId', (req, resp) => {
 
-        //Calling the task controller below, to get the requested task    
-        const task = null;
-        //When the task is returned, we send it in a response, if not found, send the proper rest response that not found
-        if (task != null){
-            if (dontHavePermission)
-            {
-                resp.status(403).send(responseMessages.forbidden)
-            }
-            else
-            {
-                resp.status(200).send(task)
-            }
-        }else{
-            resp.status(404).send(responseMessages.notFound)
-        }
-    } 
-    else
-    {
-        resp.status(400).send(responseMessages.badRequestId)
-    }
+    
      });
 
-app.get('/api/users/:userId/tasks', (req, resp) => {
+taskRouter.get('users/:userId/tasks', (req, resp) => {
 
     const {userId} = req.params;
     if (userId != null && Joi.validate(req.body, taskSchemaGetAll))
@@ -58,7 +37,7 @@ app.get('/api/users/:userId/tasks', (req, resp) => {
     }
     });
 
-app.get('/api/teams/:teamId/tasks', (req, resp) => {
+taskRouter.get('/teams/:teamId/tasks', (req, resp) => {
 
     const {teamId} = req.params;
     if (teamId != null && Joi.validate(id, idSchema))
@@ -86,7 +65,7 @@ app.get('/api/teams/:teamId/tasks', (req, resp) => {
     }
     });
 
-app.post('/api/tasks', (req, resp) => {
+taskRouter.post('/tasks', (req, resp) => {
 
     if (Joi.validate(req.body, taskSchemaPost))
     {
@@ -115,7 +94,7 @@ app.post('/api/tasks', (req, resp) => {
     }
     });
 
-app.patch('/api/tasks/:taskId', (req, resp) => {
+taskRouter.patch('/tasks/:taskId', (req, resp) => {
 
     const {taskId} = req.params;
     if (taskId != null && Joi.validate(req.body, taskSchemaPatch))
@@ -142,3 +121,4 @@ app.patch('/api/tasks/:taskId', (req, resp) => {
     }
     });
 
+export{taskRouter}
