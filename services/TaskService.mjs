@@ -4,9 +4,11 @@ const pool = getSpiraPool();
 
 const AddTask = async (task) =>
 {
+    let task = [];
     try 
     {
-        return await pool.query(`INSERT INTO task(displayname, teamid, createuserid, assigneuserid, description, createdate, tasktypeid, taskpriorityid, taskstateid,uploadfilename) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`, task);
+        task = await pool.query(`INSERT INTO task(displayname, teamid, createuserid, assigneuserid, description, createdate, tasktypeid, taskpriorityid, taskstateid,uploadfilename) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING displayname, teamid, createuserid, assigneuserid, description, tasktypeid, taskpriorityid, taskstateid,uploadfilename`, task);
+        return task.rows;
     } 
     catch (error) 
     {
@@ -29,13 +31,8 @@ const GetTask = async (getParam) =>
 
 const UpdateTask = async (task) =>
 {
-    try 
-    {
-        return await pool.query(`UPDATE task SET createuserid=$2,assignuserid=$3,displayname=$4,description=$5,tasktypeid=$6,taskpriorityid=$7,taskstateid=$8,uploadfilename=$9,modifieddate=$10 WHERE id=$1 RETURNING displayname, teamid, createuserid, assigneuserid, description, tasktypeid, taskpriorityid, taskstateid,uploadfilename`, task);  
-    } 
-    catch (error) {
-        console.log(`The following error occured while updating task: ${error}`);
-    }
+        return await pool.query(`UPDATE task SET assignuserid=$3,displayname=$4,description=$5,tasktypeid=$6,taskpriorityid=$7,taskstateid=$8,uploadfilename=$9,modifieddate=$2 WHERE id=$1 RETURNING displayname, teamid, createuserid, assigneuserid, description, tasktypeid, taskpriorityid, taskstateid,uploadfilename`, task);  
+
 }
 
 export{AddTask, GetTask, UpdateTask}
