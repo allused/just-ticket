@@ -3,7 +3,7 @@ import {idSchema, commentSchemaPost, commentSchemaPatch, commentSchemaGet} from 
 import { getTaskByTaskID } from './TaskController.mjs';
 import { GetUserByUserId } from '../services/UserService.mjs';
 import { GetTask } from '../services/TaskService.mjs';
-import { AddComment, GetCommentByTaskId } from '../services/CommentService.mjs';
+import { AddComment, GetCommentByTaskId, UpdateComment } from '../services/CommentService.mjs';
 
 const addNewComment = async (req,resp) =>
 {
@@ -83,4 +83,34 @@ const getCommentByTaskID = async (req,resp) =>
         
 }
 
-export { addNewComment, getCommentByTaskID }
+const patchCommentByID = async (req, resp) =>
+{
+   
+        const {commentId} = req.params;
+        if (commentSchemaPatch.validate(req.body))
+        {
+            try {
+                let comment = await UpdateComment([commentId]);
+                comment = comment.rows[0];
+                resp.status(201).send(`The following comment is succesfully updated: \n${comment}`)
+
+            } catch (error) {
+                resp.status(404).send(responseMessages.internalServerError)
+            }
+            
+              /* TODO - implement permission check   if (dontHavePermission)
+                {
+                    resp.status(403).send(responseMessages.forbidden)
+                }
+                else
+                {
+                } */
+        } 
+        else
+        {
+            resp.status(400).send(responseMessages.badRequestObj)
+        }
+        
+}
+
+export { addNewComment, getCommentByTaskID, patchCommentByID }
