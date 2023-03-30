@@ -1,5 +1,5 @@
 import express from 'express';
-import { addNewComment, AddNewComment, getCommentByTaskID, patchCommentByID } from '../controllers/CommentController.mjs';
+import { addNewComment, AddNewComment, deleteCommentByID, getCommentByTaskID, patchCommentByID } from '../controllers/CommentController.mjs';
 
 const commentRouter = express.Router();
 
@@ -9,5 +9,6 @@ commentRouter.post('tasks/:taskId/comments', addNewComment);
 
 commentRouter.patch('comments/:commentId', patchCommentByID);
 
+commentRouter.delete('comments/:commentId', deleteCommentByID);
 
 export{commentRouter}
