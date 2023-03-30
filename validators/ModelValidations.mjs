@@ -19,15 +19,20 @@ const commentSchemaGet  = Joi.object({
     commentId: idSchema
 });
 
+const commentSchemaDelete  = Joi.object({
+    userId: idSchema,
+    commentId: idSchema,
+    taskId: idSchema
+});
 
 const taskSchemaPost = Joi.object({
     userId: idSchema,
-    teamId: idSchema,
     taskTypeId: idSchema,
     taskPriorityId: idSchema,
     taskStateId: idSchema,
     name: Joi.string().min(1).max(20).required(),
-    description: Joi.string().min(1).max(500).required()
+    description: Joi.string().min(1).max(500).required(),
+    assigneUsername: Joi.string().alphanum().allow('_','-','.').min(1).max(20)
 });
 
 const taskSchemaPatch = Joi.object({
@@ -92,5 +97,5 @@ const userSchemaPatch = Joi.object({
 
 });
 
-export { commentSchemaPost, commentSchemaPatch, commentSchemaGet, taskSchemaPost, taskSchemaPatch, taskSchemaGet, taskSchemaGetAll, teamSchemaGet, teamSchemaPatch,
+export { commentSchemaPost, commentSchemaPatch, commentSchemaGet, commentSchemaDelete, taskSchemaPost, taskSchemaPatch, taskSchemaGet, taskSchemaGetAll, teamSchemaGet, teamSchemaPatch,
          teamSchemaPost, userSchemaPost, userSchemaPatch, userSchemaGet, userLoginSchema, idSchema}
