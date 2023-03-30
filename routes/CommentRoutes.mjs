@@ -3,10 +3,11 @@ import { addNewComment, AddNewComment, getCommentByTaskID, patchCommentByID } fr
 
 const commentRouter = express.Router();
 
-commentRouter.get('/api/tasks/:taskId/comments', getCommentByTaskID);
+commentRouter.get('tasks/:taskId/comments', getCommentByTaskID);
 
-commentRouter.post('/api/tasks/:taskId/comments', addNewComment);
+commentRouter.post('tasks/:taskId/comments', addNewComment);
 
-commentRouter.patch('/api/comments/:commentId', patchCommentByID);
+commentRouter.patch('comments/:commentId', patchCommentByID);
+
 
 export{commentRouter}
