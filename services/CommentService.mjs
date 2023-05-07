@@ -21,3 +21,5 @@ const SetCommentDeleted = async (commentId) =>
 {
     return await pool.query('UPDATE comment SET isAlive=false WHERE id=$1');
 }
+
+export {AddComment, GetCommentByTaskId, UpdateComment, SetCommentDeleted}

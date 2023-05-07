@@ -1,5 +1,5 @@
 import express from 'express';
-import { addNewComment, AddNewComment, deleteCommentByID, getCommentByTaskID, patchCommentByID } from '../controllers/CommentController.mjs';
+import { addNewComment, deleteCommentByID, getCommentByTaskID, patchCommentByID } from '../controllers/CommentController.mjs';
 
 const commentRouter = express.Router();
 

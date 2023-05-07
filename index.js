@@ -4,7 +4,7 @@ import { commentRouter } from './routes/CommentRoutes.mjs';
 import { taskRouter } from './routes/TaskRoutes.mjs';
 import { userRouter } from './routes/UserRoutes.mjs';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const app = express();
 app.use(express.json());
 app.use('/api', userRouter);

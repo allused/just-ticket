@@ -4,11 +4,11 @@ const pool = getSpiraPool();
 
 const AddTask = async (task) =>
 {
-    let task = [];
+    let result = [];
     try 
     {
-        task = await pool.query(`INSERT INTO task(displayname, teamid, createuserid, assigneuserid, description, createdate, tasktypeid, taskpriorityid, taskstateid,uploadfilename) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING displayname, teamid, createuserid, assigneuserid, description, tasktypeid, taskpriorityid, taskstateid,uploadfilename`, task);
-        return task.rows;
+        result = await pool.query(`INSERT INTO task(displayname, teamid, createuserid, assigneuserid, description, createdate, tasktypeid, taskpriorityid, taskstateid,uploadfilename) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING displayname, teamid, createuserid, assigneuserid, description, tasktypeid, taskpriorityid, taskstateid,uploadfilename`, task);
+        return result.rows;
     } 
     catch (error) 
     {
