@@ -1,9 +1,9 @@
-import { responseMessages } from './HttpRespMsgs.mjs';
-import {idSchema, commentSchemaPost, commentSchemaPatch, commentSchemaGet} from '../validators/ModelValidations.mjs';
+import { responseMessages } from '../routes/HttpRespMsgs.mjs';
+import {idSchema, commentSchemaPost, commentSchemaPatch, commentSchemaGet, commentSchemaDelete} from '../validators/ModelValidations.mjs';
 import { getTaskByTaskID } from './TaskController.mjs';
 import { GetUserByUserId } from '../services/UserService.mjs';
 import { GetTask } from '../services/TaskService.mjs';
-import { AddComment, GetCommentByTaskId, UpdateComment } from '../services/CommentService.mjs';
+import { AddComment, GetCommentByTaskId, SetCommentDeleted, UpdateComment } from '../services/CommentService.mjs';
 
 const addNewComment = async (req,resp) =>
 {
@@ -24,7 +24,7 @@ const addNewComment = async (req,resp) =>
                 {
                     const newComment = await AddComment(req.body);
 
-                    resp.status(200).send(newComment)
+                    resp.status(200).send(`The following comment is succesfully updated: \n${newComment}`)
                 }
             }else{
                 resp.status(404).send(responseMessages.notFound)
@@ -41,15 +41,15 @@ const getCommentByTaskID = async (req,resp) =>
 {
         const {taskId} = req.params;
         const {userId} = req.params;
-        let newComment;
+        let comment;
         if (commentSchemaPost.validate(req.body))
         {
             
             
             try {
-                newComment = await GetCommentByTaskId(taskId);
-                newComment = newComment.rows[0];
-                resp.status(201).send(`The following comment is succesfully created: \n${comment}`);
+                comment = await GetCommentByTaskId(taskId);
+                comment = comment.rows[0];
+                resp.status(201).send(comment);
             } catch (error) {
                 console.log(`The following error occured while getting GetCommentByTaskId: ${error}`);
                 resp.status(404).send(responseMessages.notFound);
@@ -113,4 +113,31 @@ const patchCommentByID = async (req, resp) =>
         
 }
 
-export { addNewComment, getCommentByTaskID, patchCommentByID }
+const deleteCommentByID = async (req, resp) =>
+{
+    const {commentId} = req.params;
+        if (commentSchemaDelete.validate(req.body))
+        {
+            try {
+                let comment = await SetCommentDeleted([commentId]);
+                resp.status(201).send(`The following comment is succesfully deleted: \n${comment}`)
+
+            } catch (error) {
+                resp.status(404).send(responseMessages.internalServerError)
+            }
+            
+              /* TODO - implement permission check   if (dontHavePermission)
+                {
+                    resp.status(403).send(responseMessages.forbidden)
+                }
+                else
+                {
+                } */
+        } 
+        else
+        {
+            resp.status(400).send(responseMessages.badRequestObj)
+        }
+} 
+
+export { addNewComment, getCommentByTaskID, patchCommentByID, deleteCommentByID }

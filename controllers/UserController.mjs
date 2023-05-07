@@ -1,6 +1,7 @@
 import { GetUserByTeamId, GetUserByUsername, GetUserByUserId, AddUser, UpdateUser } from "../services/UserService.mjs";
 import { responseMessages } from '../routes/HttpRespMsgs.mjs';
 import {idSchema, teamSchemaGet, userSchemaGet, userSchemaPatch, userSchemaPost} from '../validators/ModelValidations.mjs';
+import { responseMessages } from '../routes/HttpRespMsgs.mjs';
 
 const hasPermissionToGet = (userObj) =>
 {
